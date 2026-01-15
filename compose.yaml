@@ -1,0 +1,7 @@
+﻿services:
+  spy:
+    image: spy
+    build:
+      context: .
+      dockerfile: Spy/Dockerfile
+
