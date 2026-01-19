@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
-using Spy;
+﻿using Spy;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Microsoft.Extensions.Configuration;
+using Telegram.Bot;
 
 // ========= LOCATIONS ======================
 var clashRoyaleCards = new List<string>
@@ -122,7 +123,19 @@ Locations.AddLocation(
 );
 
 
-var botToken = "8314075691:AAHkdSQ_x1vF-lUaAA8RWZEae-vBAJ0_vWU";
+
+var config = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+var botToken = config["TelegramBotToken"];
+
+if (string.IsNullOrEmpty(botToken))
+{
+    throw new Exception("TelegramBotToken не найден в appsettings.json");
+}
+
 var bot = new TelegramBotClient(botToken);
 
 Console.WriteLine("Bot started");
